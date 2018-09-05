@@ -1,0 +1,15 @@
+{
+  "task": {
+    "id": "d815927106414d5693f4c0a2c292c546",
+    "feedback": "none",
+    "visualization": "waveform",
+    "proximityTag": [],
+    "annotationTag": [
+      "人说话声",
+      "突发噪音"
+    ],
+    "url": "/static/wav/d815927106414d5693f4c0a2c292c546.wav",
+    "tutorialVideoURL": "",
+    "alwaysShowTags": true
+  }
+}
