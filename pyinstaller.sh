@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-pyinstaller -F run_pyinstaller.spec
+pyinstaller run_pyinstaller.spec
