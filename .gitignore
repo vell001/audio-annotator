@@ -46,4 +46,4 @@ train
 scripts
 dataset
 result
-*.log
+*.log*
