@@ -202,7 +202,6 @@ WaveSurfer.Region = {
         if (null != params.proximity) {
             this.proximity = params.proximity;
         }
-
         this.updateRender();
         this.fireEvent('update');
         this.wavesurfer.fireEvent('region-updated', this);

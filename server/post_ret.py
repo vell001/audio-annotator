@@ -27,13 +27,9 @@ class PostRet(BaseReqHandler):
             rel_wav_path = get_relative_path("/wavs", ret_json["task"]["url"])
             wav_path = os.path.join(self.wav_dir, rel_wav_path)
             wav_json_path = wav_path + ".json"
-            if os.path.exists(wav_json_path) and os.path.getsize(wav_json_path) > 0:
-                resp["ret"] = "file_exist"
-                resp["msg"] = "结果文件存在，本次提交结果将不会保存"
-            else:
-                with open(wav_json_path, "w+", encoding="utf-8") as f:
-                    json.dump(ret_json, f, ensure_ascii=False)
-                resp["msg"] = "保存成功"
+            with open(wav_json_path, "w+", encoding="utf-8") as f:
+                json.dump(ret_json, f, ensure_ascii=False)
+            resp["msg"] = "保存成功"
         except Exception as e:
             logger.error(e)
             resp["ret"] = "error"

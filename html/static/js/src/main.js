@@ -13,6 +13,18 @@
  *       magma // color scheme array that maps 0 - 255 to rgb values
  *    
  */
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] === variable) {
+            return pair[1];
+        }
+    }
+    return (false);
+}
+
 function Annotator() {
     this.wavesurfer;
     this.playBar;
@@ -103,6 +115,15 @@ Annotator.prototype = {
             my.workflowBtns.update();
             if (my.currentTask.feedback === 'hiddenImage') {
                 my.hiddenImage.append(my.currentTask.imgUrl);
+            }
+
+            // 加载已标注结果
+            if (my.currentTask.annotations.length > 0) {
+                for (var i = 0; i < my.currentTask.annotations.length; i++) {
+                    var annotation = my.currentTask.annotations[i];
+                    var region = my.wavesurfer.addRegion(annotation);
+                    my.stages.updateStage(3, region);
+                }
             }
         });
 
@@ -201,7 +222,12 @@ Annotator.prototype = {
     // Update the interface with the next task's data
     loadNextTask: function () {
         var my = this;
-        $.getJSON(dataUrl)
+        var get_task_url = dataUrl;
+        var is_review = getQueryVariable("review");
+        if (is_review === "true") {
+            get_task_url = dataUrl + "?review=" + is_review
+        }
+        $.getJSON(get_task_url)
             .done(function (data) {
                 var ret = data.ret;
                 if (ret === "no_tasks") {
@@ -272,14 +298,14 @@ Annotator.prototype = {
                     }
                     my.loadNextTask();
 
-                } else if (data.ret === "file_exsit"){
+                } else if (data.ret === "file_exsit") {
                     alert(data.msg);
                     // If the last task had a hiddenImage component, remove it
                     if (my.currentTask.feedback === 'hiddenImage') {
                         my.hiddenImage.remove();
                     }
                     my.loadNextTask();
-                } else if (data.ret === "error"){
+                } else if (data.ret === "error") {
                     alert("结果提交出错: " + data.msg)
                 }
 
