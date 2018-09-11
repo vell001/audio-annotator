@@ -13,18 +13,6 @@
  *       magma // color scheme array that maps 0 - 255 to rgb values
  *    
  */
-function getQueryVariable(variable) {
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] === variable) {
-            return pair[1];
-        }
-    }
-    return (false);
-}
-
 function Annotator() {
     this.wavesurfer;
     this.playBar;
@@ -197,6 +185,10 @@ Annotator.prototype = {
                 $('#trigger').hide();
             }
 
+            $('#wav_url').attr('href', my.currentTask.url);
+            var wav_name = my.currentTask.url.substring(my.currentTask.url.lastIndexOf("/") + 1);
+            $('#wav_url').html(wav_name);
+
             // Update the visualization type and the feedback type and load in the new audio clip
             my.wavesurfer.params.visualization = my.currentTask.visualization; // invisible, spectrogram, waveform
             my.wavesurfer.params.feedback = my.currentTask.feedback; // hiddenImage, silent, notify, none 
@@ -223,10 +215,7 @@ Annotator.prototype = {
     loadNextTask: function () {
         var my = this;
         var get_task_url = dataUrl;
-        var is_review = getQueryVariable("review");
-        if (is_review === "true") {
-            get_task_url = dataUrl + "?review=" + is_review
-        }
+        get_task_url = dataUrl + window.location.search;
         $.getJSON(get_task_url)
             .done(function (data) {
                 var ret = data.ret;

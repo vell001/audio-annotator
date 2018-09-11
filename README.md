@@ -43,8 +43,8 @@ optional arguments:
 ## 二、在浏览器里进行标注【Browser】
 
 没有指定 `--host` 的话，默认地址就是：[http://127.0.0.1:8282](http://127.0.0.1:8282)，在任意浏览器打开这个链接，尽量使用chrome  
-v1.1版本增加了review功能，默认地址是：[http://127.0.0.1:8282/?review=true](http://127.0.0.1:8282/?review=true)
-
+v1.1版本增加了review功能，默认地址是：[http://127.0.0.1:8282/?review=true](http://127.0.0.1:8282/?review=true)  
+v1.2版本增加了指定wav_name功能，样例地址：[http://127.0.0.1:8282/?review=true&wav_name=82c75.wav](http://127.0.0.1:8282/?review=true&wav_name=82c75.wav)  
 标注界面如下：
 
 ![](https://ask.qcloudimg.com/draft/1420883/nh7nnrmkly.png)

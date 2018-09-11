@@ -8,7 +8,7 @@ import logging
 import os
 
 from server.base import BaseReqHandler
-from server.file_utils import list_files, get_relative_path
+from server.file_utils import list_files, get_relative_path, find_child_path_by_re
 
 logger = logging.getLogger(__name__)
 
@@ -19,29 +19,34 @@ class GetTask(BaseReqHandler):
         self.wav_dir = application.settings["settings"]["wav_dir"]
         print(application.settings)
 
-    def _get_task(self, review=False):
-        if "wavs" not in self.application.settings:
-            self.application.settings["wavs"] = list_files(self.wav_dir, ".wav")
-        elif not self.application.settings["wavs"]:
-            del self.application.settings["wavs"]
+    def _get_task(self, tmp_wavs_key="all", wav_suffix=".wav", review=False):
+        if tmp_wavs_key not in self.application.settings:
+            self.application.settings[tmp_wavs_key] = list_files(self.wav_dir, wav_suffix)
+
+        if not self.application.settings[tmp_wavs_key]:
+            del self.application.settings[tmp_wavs_key]
             return None
 
-        for wav_path in self.application.settings["wavs"][:]:
+        for wav_path in self.application.settings[tmp_wavs_key][:]:
             if review:
                 # 如果需要从新review，就不管json 是否存在
-                self.application.settings["wavs"].remove(wav_path)
+                self.application.settings[tmp_wavs_key].remove(wav_path)
                 return wav_path
             else:
                 wav_json_path = wav_path + ".json"
                 if os.path.exists(wav_json_path) and os.path.getsize(wav_json_path) > 0:
-                    self.application.settings["wavs"].remove(wav_path)
+                    self.application.settings[tmp_wavs_key].remove(wav_path)
                 else:
                     return wav_path
         return None
 
     def get(self):
         review = self.get_argument('review', default="false")
-        wav_path = self._get_task(review == "true")
+        wav_name = self.get_argument('wav_name', default=".wav")
+        user_id = self.get_argument("user_id", default="all")
+
+        tmp_wavs_key = user_id + wav_name
+        wav_path = self._get_task(tmp_wavs_key=tmp_wavs_key, wav_suffix=wav_name, review=(review == "true"))
         resp = dict()
         if not wav_path:
             # 没有wav了
