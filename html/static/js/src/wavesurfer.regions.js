@@ -151,7 +151,7 @@ WaveSurfer.Region = {
         this.color = params.color || '#7C7C7C';
         this.data = params.data || {};
         this.attributes = params.attributes || {};
-        this.annotation = params.annotation || '';
+        this.annotation = params.annotation || [];
         this.proximity = params.proximity || '';
 
         this.maxLength = params.maxLength;
@@ -197,7 +197,12 @@ WaveSurfer.Region = {
             this.attributes = params.attributes;
         }
         if (null != params.annotation) {
-            this.annotation = params.annotation;
+            var index=this.annotation.indexOf(params.annotation);
+            if(index<0){
+                this.annotation.push(params.annotation);
+            }else{
+                this.annotation.splice(index,1);
+            }
         }
         if (null != params.proximity) {
             this.proximity = params.proximity;

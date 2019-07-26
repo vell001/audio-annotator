@@ -621,9 +621,9 @@ AnnotationStages.prototype = {
         }
 
         // If the region has all its required tags, deselect the region and go back to stage 1
-        if (this.currentRegion.annotation && (!this.usingProximity || this.currentRegion.proximity)) {
-            this.updateStage(1);
-        }
+        // if (this.currentRegion.annotation && (!this.usingProximity || this.currentRegion.proximity)) {
+            // this.updateStage(1);
+        // }
     },
 
     // Helper function, called when the user makes changes that will affect their f1 score
