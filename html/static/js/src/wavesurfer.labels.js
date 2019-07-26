@@ -244,7 +244,7 @@ WaveSurfer.Label = {
     // Update the label element with it's corresponding region's annotation. Also update the label elements position.
     // The bottom parameter is how many pixels away from the label container's bottom the label element will be placed
     updateRender: function(bottom) {
-        this.text.innerHTML = (this.region.annotation || '?');
+        this.text.innerHTML = ((this.region.annotation.length && this.region.annotation) || '?');
         this.style(this.element, {
             left: this.region.element.offsetLeft + 'px',
             bottom: bottom + 'px',

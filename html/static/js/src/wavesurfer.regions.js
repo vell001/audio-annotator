@@ -197,8 +197,11 @@ WaveSurfer.Region = {
             this.attributes = params.attributes;
         }
         if (null != params.annotation) {
-            if(!this.annotation.includes(params.annotation)){
+            var index=this.annotation.indexOf(params.annotation);
+            if(index<0){
                 this.annotation.push(params.annotation);
+            }else{
+                this.annotation.splice(index,1);
             }
         }
         if (null != params.proximity) {
